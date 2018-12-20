@@ -2,7 +2,9 @@ package org.logstash;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Date;
+
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -33,7 +35,7 @@ public final class Timestamp implements Comparable<Timestamp>, Queueable {
      * {@link Chronology} for UTC timezone, cached here to avoid lookup of it when constructing
      * {@link DateTime} instances.
      */
-    private static final Chronology UTC_CHRONOLOGY = ISOChronology.getInstance(DateTimeZone.UTC);
+    private static final Chronology UTC_CHRONOLOGY = ISOChronology.getInstance(DateTimeZone.forID("+08:00"));
 
     public Timestamp() {
         this.time = new DateTime(UTC_CHRONOLOGY);
@@ -41,7 +43,7 @@ public final class Timestamp implements Comparable<Timestamp>, Queueable {
 
     public Timestamp(String iso8601) {
         this.time =
-            ISODateTimeFormat.dateTimeParser().parseDateTime(iso8601).toDateTime(UTC_CHRONOLOGY);
+                ISODateTimeFormat.dateTimeParser().parseDateTime(iso8601).toDateTime(UTC_CHRONOLOGY);
     }
 
     public Timestamp(long epoch_milliseconds) {
@@ -78,7 +80,7 @@ public final class Timestamp implements Comparable<Timestamp>, Queueable {
     public int compareTo(Timestamp other) {
         return time.compareTo(other.time);
     }
-    
+
     @Override
     public boolean equals(final Object other) {
         return other instanceof Timestamp && time.equals(((Timestamp) other).time);
