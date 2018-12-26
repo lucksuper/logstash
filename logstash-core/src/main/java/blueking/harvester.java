@@ -1,4 +1,4 @@
-package sharplook;
+package blueking;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +19,9 @@ import org.logstash.RubyUtil;
 /**
  * Logstash Main Entrypoint.
  */
-public final class Nifty implements Runnable, AutoCloseable {
+public final class harvester implements Runnable, AutoCloseable {
 
-    private static final Logger LOGGER = LogManager.getLogger(Nifty.class);
+    private static final Logger LOGGER = LogManager.getLogger(harvester.class);
 
     /**
      * JRuby Runtime Environment.
@@ -43,7 +43,7 @@ public final class Nifty implements Runnable, AutoCloseable {
         }
         final Path home = Paths.get(lsHome).toAbsolutePath();
         try (
-                final Nifty logstash = new Nifty(home, args, System.out, System.err, System.in)
+                final harvester logstash = new harvester(home, args, System.out, System.err, System.in)
         ) {
             logstash.run();
         } catch (final IllegalStateException e) {
@@ -83,8 +83,8 @@ public final class Nifty implements Runnable, AutoCloseable {
      * @param error  Output Stream Capturing StdErr
      * @param input  Input Stream Capturing StdIn
      */
-    Nifty(final Path home, final String[] args, final PrintStream output,
-          final PrintStream error, final InputStream input) {
+    harvester(final Path home, final String[] args, final PrintStream output,
+              final PrintStream error, final InputStream input) {
         final RubyInstanceConfig config = buildConfig(home, args);
         config.setOutput(output);
         config.setError(error);

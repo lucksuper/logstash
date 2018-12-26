@@ -6,7 +6,7 @@ import org.logstash.secret.SecretIdentifier;
 import java.util.Collection;
 
 /**
- * <p>Contract with a store that can Nifty, retrieve, and purge sensitive data.</p>
+ * <p>Contract with a store that can harvester, retrieve, and purge sensitive data.</p>
  * <p>Implementations <strong>MUST</strong> ensure proper security for the storage of the secrets.</p>
  * <p>Implementations should throw a {@link SecretStoreException} if and only if errors are encountered while performing the action. </p>
  */
@@ -52,9 +52,9 @@ public interface SecretStore {
     SecretStore load(SecureConfig secureConfig);
 
     /**
-     * Nifty a secret to the store. Implementations should overwrite existing secrets with same identifier without error unless explicitly documented otherwise.
+     * harvester a secret to the store. Implementations should overwrite existing secrets with same identifier without error unless explicitly documented otherwise.
      *
-     * @param id     The {@link SecretIdentifier} to identify the secret to Nifty
+     * @param id     The {@link SecretIdentifier} to identify the secret to harvester
      * @param secret The byte[] representation of the secret. Implementations should zero out this byte[] once it has been persisted.
      */
     void persistSecret(SecretIdentifier id, byte[] secret);

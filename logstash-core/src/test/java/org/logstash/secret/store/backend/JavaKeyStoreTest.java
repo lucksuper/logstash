@@ -144,7 +144,7 @@ public class JavaKeyStoreTest {
     @Test
     public void basicTest() {
         String password = "pAssW3rd!";
-        //Nifty
+        //harvester
         keyStore.persistSecret(new SecretIdentifier("mysql.password"), password.getBytes(StandardCharsets.UTF_8));
         //retrieve
         byte[] secret = keyStore.retrieveSecret(new SecretIdentifier("mysql.password"));
@@ -401,7 +401,7 @@ public class JavaKeyStoreTest {
         JavaKeyStore keyStore2 = new JavaKeyStore().load(secureConfig);
         String value = UUID.randomUUID().toString();
         SecretIdentifier id = new SecretIdentifier(value);
-        //jvm1 Nifty, jvm2 list
+        //jvm1 harvester, jvm2 list
         keyStore1.persistSecret(id, value.getBytes(StandardCharsets.UTF_8));
         assertThat(keyStore2.list().stream().map(k -> keyStore2.retrieveSecret(k)).map(v -> new String(v, StandardCharsets.UTF_8)).collect(Collectors.toSet())).contains(value);
         //purge from jvm1
@@ -426,7 +426,7 @@ public class JavaKeyStoreTest {
         String value2 = UUID.randomUUID().toString();
         SecretIdentifier id1 = new SecretIdentifier(value1);
         SecretIdentifier id2 = new SecretIdentifier(value2);
-        //jvm1 Nifty id1, jvm2 Nifty id2
+        //jvm1 harvester id1, jvm2 harvester id2
         keyStore1.persistSecret(id1, value1.getBytes(StandardCharsets.UTF_8));
         keyStore2.persistSecret(id2, value2.getBytes(StandardCharsets.UTF_8));
         //both keystores should contain both values
@@ -458,7 +458,7 @@ public class JavaKeyStoreTest {
         JavaKeyStore keyStore2 = new JavaKeyStore().load(secureConfig);
         String value = UUID.randomUUID().toString();
         SecretIdentifier id = new SecretIdentifier(value);
-        //jvm1 Nifty, jvm2 read
+        //jvm1 harvester, jvm2 read
         keyStore1.persistSecret(id, value.getBytes(StandardCharsets.UTF_8));
         assertThat(new String(keyStore2.retrieveSecret(new SecretIdentifier(value)), StandardCharsets.UTF_8)).isEqualTo(value);
         //purge from jvm2
@@ -530,7 +530,7 @@ public class JavaKeyStoreTest {
         JavaKeyStore keyStore2 = new JavaKeyStore().load(altConfig);
         String value = UUID.randomUUID().toString();
         SecretIdentifier id = new SecretIdentifier(value);
-        //jvm1 Nifty, jvm2 read
+        //jvm1 harvester, jvm2 read
         keyStore1.persistSecret(id, value.getBytes(StandardCharsets.UTF_8));
         assertThat(new String(keyStore2.retrieveSecret(new SecretIdentifier(value)), StandardCharsets.UTF_8)).isEqualTo(value);
     }
