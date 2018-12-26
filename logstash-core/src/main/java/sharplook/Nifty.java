@@ -1,4 +1,10 @@
-package linkedsee;
+package sharplook;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,18 +16,12 @@ import org.jruby.exceptions.RaiseException;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.logstash.RubyUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 /**
  * Logstash Main Entrypoint.
  */
-public final class logforward implements Runnable, AutoCloseable {
+public final class Nifty implements Runnable, AutoCloseable {
 
-    private static final Logger LOGGER = LogManager.getLogger(logforward.class);
+    private static final Logger LOGGER = LogManager.getLogger(Nifty.class);
 
     /**
      * JRuby Runtime Environment.
@@ -43,7 +43,7 @@ public final class logforward implements Runnable, AutoCloseable {
         }
         final Path home = Paths.get(lsHome).toAbsolutePath();
         try (
-                final logforward logstash = new logforward(home, args, System.out, System.err, System.in)
+                final Nifty logstash = new Nifty(home, args, System.out, System.err, System.in)
         ) {
             logstash.run();
         } catch (final IllegalStateException e) {
@@ -83,8 +83,8 @@ public final class logforward implements Runnable, AutoCloseable {
      * @param error  Output Stream Capturing StdErr
      * @param input  Input Stream Capturing StdIn
      */
-    logforward(final Path home, final String[] args, final PrintStream output,
-               final PrintStream error, final InputStream input) {
+    Nifty(final Path home, final String[] args, final PrintStream output,
+          final PrintStream error, final InputStream input) {
         final RubyInstanceConfig config = buildConfig(home, args);
         config.setOutput(output);
         config.setError(error);
